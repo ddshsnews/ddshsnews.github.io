@@ -73,6 +73,7 @@ main {
     border: 1px solid #ddd;
     text-align: left;
     cursor: pointer;
+    pointer-events: auto; /* 클릭 가능성 보장 */
     transition: max-height 0.3s ease-out;
     overflow: hidden;
     max-height: 100px; /* 기본 상태: 축소 */
