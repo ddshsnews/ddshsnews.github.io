@@ -1,263 +1,47 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>학급 신문</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script>
-  <!-- TinyMCE CDN -->
-  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-  <style>
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-      background: #f7f7f7;
-    }
-    .newspaper {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .article-card {
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      overflow: hidden;
-      transition: transform 0.2s;
-      cursor: pointer;
-    }
-    .article-card:hover {
-      transform: translateY(-4px);
-    }
-    .article-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 800px;
-      width: 95%;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .preview-container {
-      border: 1px solid #e2e8f0;
-      padding: 10px;
-      margin-top: 10px;
-      min-height: 100px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뉴스스탠드</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- 헤더 -->
-  <header class="bg-blue-800 text-white text-center py-8">
-    <h1 class="text-4xl font-bold">학급 신문</h1>
-    <p class="text-lg mt-2">2025년 5월호 | [학급 이름] 반</p>
-    <button id="addArticleBtn" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">새 기사 추가</button>
-  </header>
+    <header>
+        <div class="header-top">
+            <h1>뉴스스탠드</h1>
+            <div class="user-info">MY뉴스 | 전체메뉴 | <span class="username">Alex2</span> | 알림 66</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#main-news">주요뉴스</a></li>
+                <li><a href="#section-news">섹션별</a></li>
+                <li><a href="#my-news">MY뉴스</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <!-- 신문 본문 -->
-  <section class="newspaper container mx-auto my-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="articles">
-      <!-- 기사는 JavaScript로 동적으로 추가 -->
-    </div>
-  </section>
+    <main>
+        <section id="main-news">
+            <h2>8000만원으로 24억 집 어떻게 샀지? ..."임빠찬스" 딱 걸렸다</h2>
+            <div id="news-list"></div>
+        </section>
 
-  <!-- 기사 원문 보기 모달 -->
-  <div id="articleModal" class="modal">
-    <div class="modal-content">
-      <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
-      <div id="modalContent" class="text-gray-800"></div>
-      <button id="closeModalBtn" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">닫기</button>
-    </div>
-  </div>
+        <aside>
+            <div class="ad-banner">
+                <img src="ad-placeholder.jpg" alt="광고 배너">
+            </div>
+            <div class="sidebar-content">
+                <h3>추천 콘텐츠</h3>
+                <div id="sidebar-list"></div>
+            </div>
+        </aside>
+    </main>
 
-  <!-- 기사 편집/추가 모달 -->
-  <div id="editModal" class="modal">
-    <div class="modal-content">
-      <h2 class="text-2xl font-bold mb-4">기사 편집</h2>
-      <input id="editTitle" type="text" class="w-full p-2 mb-4 border rounded-lg" placeholder="기사 제목">
-      <input id="editThumbnail" type="text" class="w-full p-2 mb-4 border rounded-lg" placeholder="썸네일 이미지 URL (선택)">
-      <textarea id="editContent" class="w-full p-2 mb-4 border rounded-lg" rows="8" placeholder="기사 내용"></textarea>
-      <button id="previewBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">미리보기</button>
-      <div id="previewContainer" class="preview-container"></div>
-      <button id="saveArticleBtn" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">저장</button>
-      <button id="closeEditModalBtn" class="ml-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">취소</button>
-    </div>
-  </div>
+    <footer>
+        <p>© 2025 뉴스스탠드. All rights reserved.</p>
+    </footer>
 
-  <!-- JavaScript -->
-  <script>
-    // Firebase 설정
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      databaseURL: "https://YOUR_PROJECT_ID.REGION.firebasedatabase.app",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // DOM 요소
-    const articlesContainer = document.getElementById('articles');
-    const articleModal = document.getElementById('articleModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const editModal = document.getElementById('editModal');
-    const editTitle = document.getElementById('editTitle');
-    const editThumbnail = document.getElementById('editThumbnail');
-    const editContent = document.getElementById('editContent');
-    const previewBtn = document.getElementById('previewBtn');
-    const previewContainer = document.getElementById('previewContainer');
-    const saveArticleBtn = document.getElementById('saveArticleBtn');
-    const closeEditModalBtn = document.getElementById('closeEditModalBtn');
-    const addArticleBtn = document.getElementById('addArticleBtn');
-    let editingArticleId = null;
-
-    // TinyMCE 초기화
-    tinymce.init({
-      selector: '#editContent',
-      plugins: 'lists link image preview',
-      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image',
-      menubar: false,
-      height: 300,
-      content_style: "body { font-family: 'Noto Sans KR', sans-serif; }"
-    });
-
-    // Firebase에서 기사 가져오기
-    function loadArticles() {
-      database.ref('articles').on('value', (snapshot) => {
-        articlesContainer.innerHTML = '';
-        const data = snapshot.val();
-        if (data) {
-          Object.keys(data).forEach((key) => {
-            const article = { id: key, ...data[key] };
-            const div = document.createElement('div');
-            div.className = 'article-card';
-            div.innerHTML = `
-              ${article.thumbnail ? `<img src="${article.thumbnail}" alt="${article.title}">` : '<div class="bg-gray-200 h-40"></div>'}
-              <div class="p-4">
-                <h3 class="text-xl font-bold text-gray-900">${article.title}</h3>
-                <div class="text-gray-700 mt-2">${article.content.substring(0, 100)}${article.content.length > 100 ? '...' : ''}</div>
-                <button class="text-blue-600 hover:underline edit-btn mt-2" data-id="${article.id}">편집</button>
-              </div>
-            `;
-            div.addEventListener('click', (e) => {
-              if (e.target.classList.contains('edit-btn')) return;
-              showArticleModal(article);
-            });
-            articlesContainer.appendChild(div);
-          });
-          document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', () => showEditModal(btn.dataset.id));
-          });
-        }
-      }, (error) => {
-        console.error('Error loading articles:', error);
-      });
-    }
-
-    // 원문 모달 표시
-    function showArticleModal(article) {
-      modalTitle.textContent = article.title;
-      modalContent.innerHTML = article.content;
-      articleModal.style.display = 'flex';
-    }
-
-    // 편집 모달 표시
-    function showEditModal(id) {
-      editingArticleId = id;
-      if (id) {
-        database.ref('articles/' + id).once('value', (snapshot) => {
-          const article = snapshot.val();
-          editTitle.value = article.title;
-          editThumbnail.value = article.thumbnail || '';
-          tinymce.get('editContent').setContent(article.content || '');
-          previewContainer.innerHTML = '';
-        });
-      } else {
-        editTitle.value = '';
-        editThumbnail.value = '';
-        tinymce.get('editContent').setContent('');
-        previewContainer.innerHTML = '';
-      }
-      editModal.style.display = 'flex';
-    }
-
-    // 미리보기
-    previewBtn.addEventListener('click', () => {
-      const content = tinymce.get('editContent').getContent();
-      previewContainer.innerHTML = `<h3 class="text-xl font-bold mb-2">${editTitle.value || '제목 없음'}</h3>${content}`;
-    });
-
-    // 기사 저장
-    saveArticleBtn.addEventListener('click', () => {
-      const title = editTitle.value.trim();
-      const content = tinymce.get('editContent').getContent();
-      const thumbnail = editThumbnail.value.trim();
-      if (!title || !content) {
-        alert('제목과 내용을 입력해주세요.');
-        return;
-      }
-      const articleData = { title, content, thumbnail };
-      if (editingArticleId) {
-        database.ref('articles/' + editingArticleId).update(articleData, (error) => {
-          if (error) {
-            console.error('Error updating article:', error);
-            alert('기사 업데이트 실패');
-          }
-        });
-      } else {
-        database.ref('articles').push(articleData, (error) => {
-          if (error) {
-            console.error('Error adding article:', error);
-            alert('기사 추가 실패');
-          }
-        });
-      }
-      editModal.style.display = 'none';
-    });
-
-    // 모달 닫기
-    closeModalBtn.addEventListener('click', () => {
-      articleModal.style.display = 'none';
-    });
-    closeEditModalBtn.addEventListener('click', () => {
-      editModal.style.display = 'none';
-    });
-
-    // 새 기사 추가 버튼
-    addArticleBtn.addEventListener('click', () => {
-      showEditModal(null);
-    });
-
-    // 초기 기사 로드
-    loadArticles();
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
