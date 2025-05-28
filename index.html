@@ -1,5 +1,93 @@
-<html>
-  <body>
-    <marquee>hello, my nam;e is minjoon.</marquee>
-  </body>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 포트폴리오</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <!-- 내비게이션 바 -->
+  <nav class="bg-blue-600 text-white p-4 fixed w-full top-0 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">나의 웹사이트</h1>
+      <ul class="flex space-x-6">
+        <li><a href="#home" class="hover:text-gray-200">홈</a></li>
+        <li><a href="#about" class="hover:text-gray-200">소개</a></li>
+        <li><a href="#projects" class="hover:text-gray-200">프로젝트</a></li>
+        <li><a href="#contact" class="hover:text-gray-200">연락처</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 메인 섹션 -->
+  <section id="home" class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+    <div class="text-center">
+      <h2 class="text-5xl font-bold mb-4">환영합니다!</h2>
+      <p class="text-xl mb-6">저는 [당신의 이름]입니다. 이곳은 제 포트폴리오 웹사이트입니다.</p>
+      <a href="#about" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-200">더 알아보기</a>
+    </div>
+  </section>
+
+  <!-- 소개 섹션 -->
+  <section id="about" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-8">소개</h2>
+      <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+        안녕하세요! 저는 [당신의 이름]입니다. 웹 개발에 열정을 가진 개발자입니다.
+        이 웹사이트는 제 작업과 프로젝트를 소개하기 위해 제작되었습니다.
+        [여기에 당신에 대한 간단한 설명을 추가하세요, 예: "프론트엔드 개발자", "3년차 디자이너" 등]
+      </p>
+    </div>
+  </section>
+
+  <!-- 프로젝트 섹션 -->
+  <section id="projects" class="py-16 bg-gray-100">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-8">프로젝트</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">프로젝트 1</h3>
+          <p class="text-gray-600">이 프로젝트는 [프로젝트 설명을 입력하세요].</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">프로젝트 2</h3>
+          <p class="text-gray-600">이 프로젝트는 [프로젝트 설명을 입력하세요].</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">프로젝트 3</h3>
+          <p class="text-gray-600">이 프로젝트는 [프로젝트 설명을 입력하세요].</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 연락처 섹션 -->
+  <section id="contact" class="py-16 bg-blue-600 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-8">연락처</h2>
+      <p class="text-lg mb-4">궁금한 점이 있으시면 언제든지 연락주세요!</p>
+      <p class="text-lg">이메일: [당신의 이메일]</p>
+      <p class="text-lg">GitHub: <a href="[당신의 GitHub URL]" class="underline hover:text-gray-200">[당신의 GitHub 사용자 이름]</a></p>
+    </div>
+  </section>
+
+  <!-- 푸터 -->
+  <footer class="bg-gray-800 text-white p-4 text-center">
+    <p>&copy; 2025 [당신의 이름]. All rights reserved.</p>
+  </footer>
+
+  <!-- 스크롤 시 부드러운 이동을 위한 JavaScript -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
 </html>
