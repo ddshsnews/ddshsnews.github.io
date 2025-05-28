@@ -6,17 +6,21 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    justify-content: center;
+    align-items: center;
 }
 
 header {
     background-color: #fff;
     padding: 10px;
     border-bottom: 1px solid #ccc;
+    width: 80%;
+    text-align: center;
 }
 
 .header-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     font-size: 12px;
 }
@@ -48,12 +52,12 @@ nav ul li a {
 }
 
 main {
-    display: flex;
-    flex: 1;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
 }
 
 #main-news {
-    flex: 3;
     padding: 20px;
 }
 
@@ -67,28 +71,35 @@ main {
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ddd;
+    text-align: left;
+    cursor: pointer;
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+    max-height: 100px; /* 기본 상태: 축소 */
 }
 
-aside {
-    flex: 1;
-    padding: 20px;
-    background-color: #fff;
-    border-left: 1px solid #ccc;
+.news-item.expanded {
+    max-height: 500px; /* 확장 상태 */
 }
 
-.ad-banner img {
-    width: 100%;
-    height: auto;
+.news-item h3 {
+    margin: 0;
+    font-size: 18px;
 }
 
-.sidebar-content h3 {
-    font-size: 16px;
-    margin-bottom: 10px;
+.news-item .summary {
+    margin: 5px 0;
+    color: #555;
 }
 
-.sidebar-item {
-    margin: 10px 0;
-    font-size: 14px;
+.news-item .full-content {
+    display: none;
+    margin-top: 10px;
+    color: #333;
+}
+
+.news-item.expanded .full-content {
+    display: block;
 }
 
 footer {
@@ -96,4 +107,5 @@ footer {
     text-align: center;
     padding: 10px;
     border-top: 1px solid #ccc;
+    width: 80%;
 }
